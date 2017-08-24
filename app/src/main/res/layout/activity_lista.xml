@@ -16,7 +16,10 @@
         android:minHeight="?attr/actionBarSize"/>
 
     <ListView
+        android:id="@+id/lista"
         android:layout_width="match_parent"
+        android:divider="#c9c9c9"
+        android:dividerHeight=".1dp"
         android:layout_height="match_parent">
 
     </ListView>

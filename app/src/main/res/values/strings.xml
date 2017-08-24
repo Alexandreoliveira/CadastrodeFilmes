@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Cadastro de Filmes</string>
+    <string name="cadastrofilmes">Cadastro de filmes</string>
+    <string name="listafilmes">Lista de filmes</string>
+
+    <string-array name="nota_filmes">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="generos_filmes">
+        <item>Ação</item>
+        <item>Terror</item>
+        <item>Suspense</item>
+        <item>Ficção</item>
+        <item>Comédia</item>
+        <item>Drama</item>
+        <item>Policial</item>
+        <item>Animação</item>
+    </string-array>
+
 </resources>

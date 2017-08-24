@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#fc5e3b</color>
     <color name="colorPrimaryDark">#b93e23</color>
     <color name="colorAccent">#c64534</color>
     <color name="branco">#fff</color>
+    <color name="my_spinner_text_color">#000000</color>
+
 </resources>

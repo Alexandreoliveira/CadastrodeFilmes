@@ -1,22 +1,34 @@
 package alexandre.com.br.cadastrodefilmes.view;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import alexandre.com.br.cadastrodefilmes.R;
+import alexandre.com.br.cadastrodefilmes.model.Filme;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,13 +41,14 @@ public class MainActivity extends AppCompatActivity {
     private Button listar;
     private Button filtrar;
 
-    public static List<String> titulos = new ArrayList<>();
+    public static List<Filme> titulos = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.context = this;
 
 
         this.titulo = (EditText) findViewById(R.id.nome_filme);
@@ -59,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
         this.nota.setAdapter(new ArrayAdapter<>(this, R.layout.layout_spinner, list2));
 
 
+        titulos = lefilme();
+
+
         this.listar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         this.filtrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goLista();
+                goLista(genero.getText().toString());
             }
         });
 
@@ -77,15 +93,38 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (!titulo.getText().toString().equals("")) {
+                if (titulo.getText().toString().equals("")) {
+                    Toast.makeText(context, "Insira o título do filme", Toast.LENGTH_SHORT).show();
+                    titulo.requestFocus();
+                    return;
+                }
+                if (genero.getText().toString().equals("")) {
+                    Toast.makeText(context, "Insira o gênero do filme", Toast.LENGTH_SHORT).show();
+                    genero.requestFocus();
+                    return;
+                }
+                if (nota.getText().toString().equals("")) {
+                    Toast.makeText(context, "Insira a nota do filme", Toast.LENGTH_SHORT).show();
+                    nota.requestFocus();
+                    return;
+                }
 
-                    titulos.add(titulo.getText().toString());
+                try {
+                    Filme f = new Filme(titulo.getText().toString(), genero.getText().toString(), nota.getText().toString());
+                    titulos.add(f);
+                    salvaFilme(f);
                     genero.setText("");
                     genero.clearListSelection();
                     nota.setText("");
                     nota.clearListSelection();
                     titulo.setText("");
+                    titulo.requestFocus();
+                    Toast.makeText(context, "Filme salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                } catch (Exception ex) {
+                    Toast.makeText(context, "Erro ao salvar filme", Toast.LENGTH_SHORT).show();
                 }
+
+
             }
         });
     }
@@ -101,4 +140,53 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    private void salvaFilme(Filme filme) {
+
+
+        File logFile = new File(context.getFilesDir(), "filmes.txt");
+        if (!logFile.exists()) {
+            try {
+                logFile.createNewFile();
+            } catch (IOException e) {
+                Toast.makeText(context, "Erro ao salvar filme", Toast.LENGTH_SHORT).show();
+            }
+        }
+        try {
+            //BufferedWriter for performance, true to set append to file flag
+            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+            buf.append(filme.getTitulo() + ";" + filme.getGenero() + ";" + filme.getNota());
+            buf.newLine();
+            buf.close();
+        } catch (IOException e) {
+            Toast.makeText(context, "Erro ao salvar filme", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private List<Filme> lefilme() {
+
+        BufferedReader br = null;
+        File arq;
+        String lstrlinha;
+        List<Filme> filmes = new ArrayList<>();
+
+        try {
+            arq = new File(context.getFilesDir() + "/filmes.txt");
+            br = new BufferedReader(new FileReader(arq));
+
+            while ((lstrlinha = br.readLine()) != null) {
+
+                String[] filme = lstrlinha.split(";");
+                filmes.add(new Filme(filme[0], filme[1], filme[2]));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return filmes;
+    }
+
+
 }
+
+

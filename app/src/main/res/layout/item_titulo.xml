@@ -1,17 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/titulo"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:text="FILME"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        android:textColor="#000"
-        android:textSize="24dp"/>
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            android:gravity="center_vertical"
+            android:text="FILME"
+            android:textColor="#000"
+            android:textSize="24dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Gênero:"
+                android:textColor="#505050"
+                />
+
+            <TextView
+                android:id="@+id/list_genero"
+                android:layout_width="0dp"
+                android:textColor="#494949"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nota:"
+                android:textColor="#505050"
+                />
+
+            <TextView
+                android:id="@+id/list_nota"
+                android:layout_width="0dp"
+                android:textColor="#494949"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
